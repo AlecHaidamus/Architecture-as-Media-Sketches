@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Alec's Sketches</title>
+<!-- preload thumbnails + overlay (trimmed for brevity) -->
+<link rel="preload" as="image" href="images/sketches/city.jpg">
+<link rel="preload" as="image" href="images/paper bg 1.png">
+
+<style>
+/* RESET */
+html,body{height:100%;margin:0}
+body{background:#000;display:flex;align-items:center;justify-content:center}
+
+/* ── SIDEBAR DESKTOP ─────────────────────────── */
+#sidebar{
+  position:fixed;
+  left: 5%;;
+  top:30%;
+  width:110px;          /* canonical width */
+  max-width:15vw;
+
+  z-index:10;
+}
+#sidebar img{width:100%;display:block;filter:invert();pointer-events:none}
+.option{position:absolute;left:0;width:100%;height:8%;cursor:pointer;z-index: 100;}
+.option:hover{background:rgba(255,255,255,.1);filter: blur(4px);cursor:pointer}
+/* individual offsets */
+.option:nth-child(2){top:0.2%}
+.option:nth-child(3){top:9.5%}
+.option:nth-child(4){top:19%}
+.option:nth-child(5){top:28.7%}
+.option:nth-child(6){top:38.3%}
+.option:nth-child(7){top:47.5%}
+.option:nth-child(8){top:56%}
+.option:nth-child(9){top:65%}
+.option:nth-child(10){top:74%}
+.option:nth-child(11){top:83.5%}
+.option:nth-child(12){top:92%}
+
+/* ── FRAME ───────────────────────────────────── */
+.frame{
+  --w:min(80vw,calc(90vh*0.7727));
+  width:var(--w);
+  aspect-ratio:8.5/11;
+  margin-left:clamp(0px,calc(220px-(100vw-var(--w))/2),220px);
+  position:relative;
+}
+.frame img{width:100%;height:100%;object-fit:cover;display:block}
+.overlay{position:absolute;inset:0;z-index:-1;filter:brightness(140%);rotate:-0.3deg}
+.main-img{z-index:1;mix-blend-mode:darken; scale: 95%;}
+
+/* ── MOBILE STACK ≤700px ─────────────────────── */
+@media(max-width:700px){
+  body{flex-direction:column;align-items:center;gap:.6rem}
+
+  .frame{margin-left:0;order:1}
+
+  #sidebar{
+    position:relative;   /* keep hotspot alignment */
+    top:auto;left:auto;
+    width:180px;         /* SAME size as desktop */
+    margin:0;
+    order:2;
+  }
+}
+</style>
+</head>
+<body>
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <img src="images/options.jpg" alt="Options menu">
+
+  <div class="option" data-preview="images/sketches/city.jpg"></div>
+  <div class="option" data-preview="images/sketches/fabric.jpg"></div>
+  <div class="option" data-preview="images/sketches/surface.jpg"></div>
+  <div class="option" data-preview="images/sketches/phone.jpg"></div>
+  <div class="option" data-preview="images/sketches/bobst.jpg"></div>
+  <div class="option" data-preview="images/sketches/window.jpg"></div>
+  <div class="option" data-preview="images/sketches/garden.jpg"></div>
+  <div class="option" data-preview="images/sketches/sacred.jpg"></div>
+  <div class="option" data-preview="images/sketches/grand central.jpg"></div>
+  <div class="option" data-preview="images/sketches/state.jpg"></div>
+  <div class="option" data-preview="images/sketches/bridge.jpg"></div>
+</div>
+
+<!-- FRAME -->
+<div class="frame">
+  <img class="overlay" src="images/paper bg 1.png" alt="Overlay">
+  <img id="main" class="main-img" src="images/sketches/city.jpg" alt="Selected preview">
+</div>
+
+<script>
+const main=document.getElementById('main');let selected=main.src;
+sidebar.addEventListener('mousemove',e=>{const hit=e.target.closest('.option');if(hit)main.src=hit.dataset.preview});
+sidebar.addEventListener('click',e=>{const hit=e.target.closest('.option');if(hit)selected=main.src=hit.dataset.preview});
+sidebar.addEventListener('mouseleave',()=>main.src=selected);
+</script>
+</body>
+</html>
